@@ -5,9 +5,11 @@ import com.example.booklibrary.domain.repo.BookRemoteRepo
 import com.example.booklibrary.data.repo.BookRemoteRepoImpl
 import com.example.booklibrary.domain.usecase.GetBooks
 import com.example.booklibrary.domain.utility.Links
+import com.example.booklibrary.presentation.viewModel.BookListViewModel
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -27,4 +29,7 @@ val appModule = module {
 
     single<BookRemoteRepo> { BookRemoteRepoImpl(get()) }
     single { GetBooks(get()) }
+    viewModel { BookListViewModel(get()) }
+
+
 }

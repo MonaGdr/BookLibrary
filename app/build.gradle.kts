@@ -2,9 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp") version "2.1.20-1.0.32"
-//    id("com.google.dagger.hilt.android")
-//    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.google.devTools.ksp)
+    kotlin("plugin.serialization") version "2.1.20"
 }
 
 android {
@@ -58,10 +57,20 @@ dependencies {
     implementation (libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // Retrofit + Gson
+    // Retrofit
     implementation (libs.retrofit)
-    implementation (libs.converter.gson)
 
+    //Serialization
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
+    implementation(libs.okhttp)
+
+    // Koin (di)
+    implementation(libs.koin.core)
+    implementation (libs.io.insert.koin.koin.android4)
+    implementation (libs.koin.androidx.navigation)
+    implementation (libs.koin.androidx.compose)
+    testImplementation (libs.koin.test.junit4)
 
     // Coroutines
     implementation (libs.kotlinx.coroutines.android)
@@ -70,6 +79,13 @@ dependencies {
     //noinspection GradleDependency
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.androidx.lifecycle.runtime.ktx.v287)
+
+    //navigation
+    implementation (libs.androidx.navigation.compose)
+
+    //coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
     // Paging 3
     implementation (libs.androidx.paging.runtime)

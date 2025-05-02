@@ -80,7 +80,7 @@ fun BookDetailScreen(
                 Text(book.title, style = MaterialTheme.typography.headlineSmall)
                 Spacer(modifier = Modifier.height(8.dp))
 
-                //author name
+                //authorName name
                 Text(
                     "By: ${book.authorName ?: "Unknown"}",
                     style = MaterialTheme.typography.bodyMedium

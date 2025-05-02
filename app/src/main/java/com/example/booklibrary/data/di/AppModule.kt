@@ -1,8 +1,10 @@
 package com.example.booklibrary.data.di
 
+import androidx.room.Room
+import com.example.booklibrary.data.local.db.BookDatabase
 import com.example.booklibrary.data.remote.api.BookApi
-import com.example.booklibrary.domain.repo.BookRemoteRepo
-import com.example.booklibrary.data.repo.BookRemoteRepoImpl
+import com.example.booklibrary.domain.repo.BookRepo
+import com.example.booklibrary.data.repo.BookRepoImpl
 import com.example.booklibrary.domain.usecase.GetBooks
 import com.example.booklibrary.domain.utility.Links
 import com.example.booklibrary.presentation.viewModel.BookListViewModel
@@ -18,8 +20,9 @@ val appModule = module {
     val json = Json {
         ignoreUnknownKeys = true
     }
-    single {
+    single { Room.databaseBuilder(get(), BookDatabase::class.java, "book_database").build().bookDao() }
 
+    single {
         Retrofit.Builder()
             .baseUrl(Links.API_ROOT_URI)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
@@ -27,7 +30,12 @@ val appModule = module {
             .create(BookApi::class.java)
     }
 
-    single<BookRemoteRepo> { BookRemoteRepoImpl(get()) }
+    single<BookRepo> {
+        BookRepoImpl(
+            api = get(),
+            dao = get()
+        )
+    }
     single { GetBooks(get()) }
     viewModel { BookListViewModel(get()) }
 

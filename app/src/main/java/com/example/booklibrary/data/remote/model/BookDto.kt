@@ -1,5 +1,6 @@
 package com.example.booklibrary.data.remote.model
 
+import com.example.booklibrary.data.local.model.BookEntity
 import com.example.booklibrary.domain.model.Book
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -21,6 +22,17 @@ data class BookDto(
 ){
     fun toDomain(): Book {
         return Book(
+            id = id,
+            title = title,
+            authorName = authors.firstOrNull()?.name,
+            summary = summaries.firstOrNull(),
+            coverUrl = formats["image/jpeg"],
+            downloadCount = downloadCount
+        )
+    }
+
+    fun toBookEntity(): BookEntity {
+        return BookEntity(
             id = id,
             title = title,
             authorName = authors.firstOrNull()?.name,

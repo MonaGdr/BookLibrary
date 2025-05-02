@@ -9,8 +9,15 @@ import com.example.booklibrary.data.local.model.BookEntity
 @Dao
 interface BookDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(books: List<BookEntity>)
+    suspend fun insertAll(books: List<BookEntity>)
 
     @Query("SELECT * FROM books")
     suspend fun getAllBooks(): List<BookEntity>
+
+    @Query("SELECT * FROM books ORDER BY id LIMIT :limit OFFSET :offset")
+    suspend fun getBooksPage(limit: Int, offset: Int): List<BookEntity>
+
+    @Query("DELETE FROM books")
+    suspend fun clearAll()
+
 }

@@ -1,6 +1,7 @@
 package com.example.booklibrary.data.di
 
 import androidx.room.Room
+import com.example.booklibrary.data.NetworkChecker
 import com.example.booklibrary.data.local.db.BookDatabase
 import com.example.booklibrary.data.remote.api.BookApi
 import com.example.booklibrary.domain.repo.BookRepo
@@ -20,8 +21,15 @@ val appModule = module {
     val json = Json {
         ignoreUnknownKeys = true
     }
+    
+    //netWorkChecker
+    single { NetworkChecker(
+        context = get()
+    ) }
+    //db
     single { Room.databaseBuilder(get(), BookDatabase::class.java, "book_database").build().bookDao() }
 
+    //api
     single {
         Retrofit.Builder()
             .baseUrl(Links.API_ROOT_URI)
@@ -30,14 +38,23 @@ val appModule = module {
             .create(BookApi::class.java)
     }
 
+    //repo
     single<BookRepo> {
         BookRepoImpl(
             api = get(),
-            dao = get()
+            dao = get(),
+            networkChecker = get()
         )
     }
+    
+    //useCase
     single { GetBooks(get()) }
-    viewModel { BookListViewModel(get()) }
+    
+    //viewModel
+    viewModel { BookListViewModel(
+        getBooks = get(),
+        networkChecker = get()
+    ) }
 
 
 }

@@ -2,8 +2,12 @@ package com.example.booklibrary.presentation.utility
 
 import com.example.booklibrary.domain.model.Book
 
-sealed class BookListUiState {
-    object Loading : BookListUiState()
-    data class Success(val books: List<Book>) : BookListUiState()
-    data class Error(val message: String) : BookListUiState()
+sealed class BookListUiState(
+    var data: List<Book>? = null,
+    val message: String? = null
+) {
+    class Loading : BookListUiState()
+    class Success( books: List<Book>) : BookListUiState(data = books)
+    class Error( errorMessage: String) : BookListUiState(message = errorMessage)
 }
+

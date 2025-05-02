@@ -42,7 +42,7 @@ fun BookDetailScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     val book = remember {
-        (uiState as? BookListUiState.Success)?.books?.find { it.id == bookId }
+        (uiState as? BookListUiState.Success)?.data?.find { it.id == bookId }
     }
 
     Scaffold(
